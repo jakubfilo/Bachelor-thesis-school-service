@@ -1,7 +1,0 @@
-openapi: 3.0.3
-info:
-  title: demo-service-B
-  version: latest
-
-paths:
-
