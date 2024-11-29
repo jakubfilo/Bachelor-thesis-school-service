@@ -11,14 +11,14 @@
     </parent>
 
     <groupId>com.jakubfilo</groupId>
-    <artifactId>demo-service-B</artifactId>
+    <artifactId>school-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo-service-B</name>
-    <description>demo-service-B</description>
+    <name>school-service</name>
+    <description>school-service</description>
 
     <properties>
-        <package.name>com.jakubfilo.demoservicea</package.name>
-        <main.class>${package.name}.DemoServiceA</main.class> <!-- TODO Change -->
+        <package.name>com.jakubfilo.schoolservice</package.name>
+        <main.class>${package.name}.SchoolService</main.class>
         <java.version>21</java.version>
 
         <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
@@ -73,7 +73,7 @@
                         </goals>
                         <configuration>
                             <generatorName>spring</generatorName>
-                            <inputSpec>${project.basedir}/src/main/resources/api/demo-service-b-api.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/api/school-service-api.yaml</inputSpec>
                             <apiPackage>${package.name}.api</apiPackage>
                             <modelPackage>${package.name}.api.model</modelPackage>
                             <modelNameSuffix>Api</modelNameSuffix>

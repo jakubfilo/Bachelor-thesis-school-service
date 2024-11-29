@@ -1,13 +1,13 @@
-package com.jakubfilo.demoserviceb;
+package com.jakubfilo.schoolservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoServiceBApplication {
+public class SchoolServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoServiceBApplication.class, args);
+		SpringApplication.run(SchoolServiceApplication.class, args);
 	}
 
 }
