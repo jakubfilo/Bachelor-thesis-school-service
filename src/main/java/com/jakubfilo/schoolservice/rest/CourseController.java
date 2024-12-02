@@ -14,7 +14,9 @@ import com.jakubfilo.schoolservice.api.model.MultipleCourseDetailBriefApi;
 import com.jakubfilo.schoolservice.api.model.StudentsInCourseApi;
 import com.jakubfilo.schoolservice.api.model.TermApi;
 import com.jakubfilo.schoolservice.facade.CourseFacade;
+import com.jakubfilo.schoolservice.facade.StudentFacade;
 import com.jakubfilo.schoolservice.mapper.CourseMapper;
+import com.jakubfilo.schoolservice.mapper.StudentMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -23,8 +25,10 @@ import lombok.AllArgsConstructor;
 public class CourseController implements CourseControllerApi {
 
 	private static final CourseMapper COURSE_MAPPER = CourseMapper.INSTANCE;
+	private static final StudentMapper STUDENT_MAPPER = StudentMapper.INSTANCE;
 
 	private final CourseFacade courseFacade;
+	private final StudentFacade studentFacade;
 
 	@Override
 	public ResponseEntity<List<String>> getAllCoursesIds() {
@@ -48,13 +52,9 @@ public class CourseController implements CourseControllerApi {
 	}
 
 	@Override
-	public ResponseEntity<StudentsInCourseApi> getCourseStudents(String courseId, Boolean gpa) {
-		return null;
-	}
-
-	@Override
-	public ResponseEntity<StudentsInCourseApi> getCourseStudentsWithFallback(String courseId, Boolean gpa) {
-		return null;
+	public ResponseEntity<StudentsInCourseApi> getCourseStudents(String courseId) {
+		var studentDetails = studentFacade.getStudentsInCourse(courseId);
+		return ResponseEntity.ok(STUDENT_MAPPER.map(studentDetails));
 	}
 
 	@Override

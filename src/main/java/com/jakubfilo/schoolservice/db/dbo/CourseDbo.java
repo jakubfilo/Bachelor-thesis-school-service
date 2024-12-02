@@ -1,6 +1,6 @@
 package com.jakubfilo.schoolservice.db.dbo;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 
@@ -27,7 +27,7 @@ public class CourseDbo {
 	Term term;
 	int startYear;
 	@Builder.Default
-	List<String> enrolledStudentsIds = List.of();
+	Set<String> enrolledStudentsIds = Set.of();
 	private int enrolledStudentsCount;
 	// TODO add more info, for example room, day of week, time
 }

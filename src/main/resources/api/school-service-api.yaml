@@ -144,11 +144,11 @@ paths:
         required: true
         schema:
           type: string
-      - name: gpa
-        in: query
-        description: Include student's GPA in the list
-        schema:
-          type: boolean
+#      - name: gpa
+#        in: query
+#        description: Include student's GPA in the list
+#        schema:
+#          type: boolean TODO potentially implement this?
       responses:
         '200':
           description: List of students enrolled in course with given Id
@@ -174,11 +174,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: gpa
-        in: query
-        description: Include student's GPA in the list
-        schema:
-          type: boolean
       responses:
         '200':
           description: List of students enrolled in course with given Id

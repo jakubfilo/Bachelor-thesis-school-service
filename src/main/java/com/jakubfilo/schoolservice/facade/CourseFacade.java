@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.jakubfilo.schoolservice.client.PeopleServiceClient;
 import com.jakubfilo.schoolservice.db.CourseRepository;
 import com.jakubfilo.schoolservice.rest.response.CourseDetailRepresentation;
 
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 public class CourseFacade {
 
 	private final CourseRepository courseRepository;
+	private final PeopleServiceClient peopleServiceClient;
 
 	public List<String> getAllCourseIds() {
 		return courseRepository.getAllIds();
