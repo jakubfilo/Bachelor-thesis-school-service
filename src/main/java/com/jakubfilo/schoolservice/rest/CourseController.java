@@ -1,0 +1,75 @@
+package com.jakubfilo.schoolservice.rest;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jakubfilo.schoolservice.api.CourseControllerApi;
+import com.jakubfilo.schoolservice.api.model.CourseDetailApi;
+import com.jakubfilo.schoolservice.api.model.CourseDetailBriefApi;
+import com.jakubfilo.schoolservice.api.model.DepartmentTypeApi;
+import com.jakubfilo.schoolservice.api.model.MultipleCourseDetailApi;
+import com.jakubfilo.schoolservice.api.model.MultipleCourseDetailBriefApi;
+import com.jakubfilo.schoolservice.api.model.StudentsInCourseApi;
+import com.jakubfilo.schoolservice.api.model.TermApi;
+import com.jakubfilo.schoolservice.facade.CourseFacade;
+import com.jakubfilo.schoolservice.mapper.CourseMapper;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@RestController
+public class CourseController implements CourseControllerApi {
+
+	private static final CourseMapper COURSE_MAPPER = CourseMapper.INSTANCE;
+
+	private final CourseFacade courseFacade;
+
+	@Override
+	public ResponseEntity<List<String>> getAllCoursesIds() {
+		var courseIdsList = courseFacade.getAllCourseIds();
+		return ResponseEntity.ok(courseIdsList);
+	}
+
+	@Override
+	public ResponseEntity<CourseDetailApi> getCourseDetail(String courseId) {
+		var courseDetail = courseFacade.getCourseDetail(courseId);
+
+		return courseDetail.isPresent()
+				? ResponseEntity.ok(COURSE_MAPPER.map(courseDetail.get()))
+				: ResponseEntity.notFound().build();
+	}
+
+
+	@Override
+	public ResponseEntity<CourseDetailBriefApi> getCourseDetailBrief(String courseId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<StudentsInCourseApi> getCourseStudents(String courseId, Boolean gpa) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<StudentsInCourseApi> getCourseStudentsWithFallback(String courseId, Boolean gpa) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<CourseDetailBriefApi>> getAllAvailableCourses(DepartmentTypeApi department, TermApi term, Integer year,
+			Integer credits) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<MultipleCourseDetailApi> getAllCoursesDetails() {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<MultipleCourseDetailBriefApi> getAllCoursesDetailsBrief() {
+		return null;
+	}
+}
