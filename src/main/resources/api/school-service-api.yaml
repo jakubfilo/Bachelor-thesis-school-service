@@ -199,11 +199,11 @@ paths:
         required: true
         schema:
           type: string
-      - name: gpa
-        in: query
-        description: Include student's GPA in the list
-        schema:
-          type: boolean
+#      - name: gpa
+#        in: query
+#        description: Include student's GPA in the list
+#        schema:
+#          type: boolean
       responses:
         '200':
           description: List of students enrolled in course with given Id
@@ -215,6 +215,42 @@ paths:
           description: Course not found
         '503':
           description: Student service is unavailable
+
+  /school/course/lookup/batch:
+    get:
+      tags:
+      - external-course-controller
+      summary: Return details of courses with given ids, skips the ones that are not found
+      operationId: getCourseDetailsBatch
+      parameters:
+      - name: courseIds
+        in: query
+        description: List of course ids to return details for
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      responses:
+        '200':
+          description: Details for courses with given Ids. All courses were found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseDetail'
+                uniqueItems: true
+        '206':
+          description: Some courses were not found. Returning details for found courses. Log failed ids for audit purposes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseDetail'
+                uniqueItems: true
 
   /school/department/list:
     get:
@@ -348,6 +384,7 @@ components:
           default: []
           items:
             type: string
+          uniqueItems: true
         enrolledStudentsCount:
           type: integer
           format: int32

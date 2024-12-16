@@ -2,6 +2,8 @@ package com.jakubfilo.schoolservice.facade;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -26,5 +28,13 @@ public class CourseFacade {
 		var courseDetailDbo = courseRepository.findById(courseId);
 		return courseDetailDbo
 				.map(CourseDetailRepresentation::from);
+	}
+
+	public Set<CourseDetailRepresentation> getCourseDetailsBatch(Set<String> courseIds) {
+		return courseIds.stream()
+				.map(this::getCourseDetail)
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.collect(Collectors.toSet());
 	}
 }

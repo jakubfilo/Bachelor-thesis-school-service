@@ -9,7 +9,7 @@ import com.jakubfilo.schoolservice.client.api.MultipleStudentsDetailRepresentati
 @Mapper
 public interface StudentMapper {
 
-	public static final StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
+	StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
 
 	StudentsInCourseApi map(MultipleStudentsDetailRepresentation multipleStudentsDetailRepresentation);
 }

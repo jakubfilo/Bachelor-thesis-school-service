@@ -1,6 +1,6 @@
 package com.jakubfilo.schoolservice.rest.response;
 
-import java.util.List;
+import java.util.Set;
 
 import com.jakubfilo.schoolservice.db.dbo.CourseDbo;
 import com.jakubfilo.schoolservice.domain.DepartmentType;
@@ -26,7 +26,7 @@ public class CourseDetailRepresentation {
 	@Min(1993)
 	@Max(2100)
 	private int startYear;
-	private List<String> enrolledStudentsIds;
+	private Set<String> enrolledStudentsIds;
 	private int enrolledStudentsCount;
 
 	public static CourseDetailRepresentation from(CourseDbo courseDbo) {
