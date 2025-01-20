@@ -5,6 +5,7 @@ import static com.jakubfilo.schoolservice.client.PeopleServiceClientNoFallback.C
 import java.util.Set;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.jakubfilo.schoolservice.client.api.MultipleStudentsDetailRepresentation;
 
@@ -17,6 +18,7 @@ public interface PeopleServiceClientNoFallback {
 
 	String STUDENTS_DETAIL_BATCH_LOOKUP_RESOURCE_WRONG_PATH = "/students/detail/wrong-path";
 
+	@GetMapping(STUDENTS_DETAIL_BATCH_LOOKUP_RESOURCE_WRONG_PATH)
 	MultipleStudentsDetailRepresentation getStudentsDetailBatchLookupWrongPath(Set<String> studentIds);
 
 }
