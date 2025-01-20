@@ -12,7 +12,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
 @Jacksonized
 public class CourseDbo {
 
@@ -28,6 +28,7 @@ public class CourseDbo {
 	int startYear;
 	@Builder.Default
 	Set<String> enrolledStudentsIds = Set.of();
-	private int enrolledStudentsCount;
+	@Builder.Default
+	int enrolledStudentsCount = 0;
 	// TODO add more info, for example room, day of week, time
 }

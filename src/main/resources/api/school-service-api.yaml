@@ -252,6 +252,42 @@ paths:
                   $ref: '#/components/schemas/CourseDetail'
                 uniqueItems: true
 
+  /school/course/enroll:
+    post:
+      tags:
+      - external-course-controller
+      summary: Enroll student in given courses
+      operationId: enrollStudentInCourses
+      parameters:
+      - name: studentId
+        in: query
+        description: Id of student to enroll
+        required: true
+        schema:
+          type: string
+      - name: courseIds
+        in: query
+        description: List of course ids to enroll student in
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      responses:
+        '200':
+          description: Student enrolled in all courses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollStudentInCoursesResponse'
+        '404':
+          description: Some courses were not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollStudentInCoursesResponse'
+
   /school/department/list:
     get:
       tags:
@@ -498,11 +534,15 @@ components:
             $ref: '#/components/schemas/CourseDetail'
         head:
           $ref: '#/components/schemas/DepartmentHeadDetail' # Todo change this to something else
-
         # TODO add more details about department
-
-
-
-
-
-
+    EnrollStudentInCoursesResponse:
+      type: object
+      properties:
+        studentId:
+          type: string
+        enrolledCourses:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          default: []

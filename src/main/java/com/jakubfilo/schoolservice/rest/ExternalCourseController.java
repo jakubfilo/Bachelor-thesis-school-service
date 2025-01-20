@@ -3,13 +3,16 @@ package com.jakubfilo.schoolservice.rest;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jakubfilo.schoolservice.api.ExternalCourseControllerApi;
 import com.jakubfilo.schoolservice.api.model.CourseDetailApi;
+import com.jakubfilo.schoolservice.api.model.EnrollStudentInCoursesResponseApi;
 import com.jakubfilo.schoolservice.facade.CourseFacade;
 import com.jakubfilo.schoolservice.mapper.CourseMapper;
+import com.jakubfilo.schoolservice.rest.response.EnrollStudentInCoursesResponse;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,19 @@ public class ExternalCourseController implements ExternalCourseControllerApi { /
 
 	private static final CourseMapper COURSE_MAPPER = CourseMapper.INSTANCE;
 	private final CourseFacade courseFacade;
+
+	@Override
+	public ResponseEntity<EnrollStudentInCoursesResponseApi> enrollStudentInCourses(String studentId, Set<String> courseIds) {
+		var enrolledCoursesIds = courseFacade.enrollStudentInCourses(studentId, courseIds);
+		var enrollStudentResponse = EnrollStudentInCoursesResponse.builder()
+				.studentId(studentId)
+				.enrolledCourses(enrolledCoursesIds)
+				.build();
+
+		var response = COURSE_MAPPER.map(enrollStudentResponse);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(response);
+	}
 
 	@Override
 	public ResponseEntity<Set<CourseDetailApi>> getCourseDetailsBatch(Set<String> courseIds) {

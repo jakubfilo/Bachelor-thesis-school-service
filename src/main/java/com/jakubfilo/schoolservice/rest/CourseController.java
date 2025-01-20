@@ -31,7 +31,7 @@ public class CourseController implements CourseControllerApi {
 	private final StudentFacade studentFacade;
 
 	@Override
-	public ResponseEntity<List<String>> getAllCoursesIds() {
+	public ResponseEntity<List<String>> getAllCoursesIds() { // TODO change to Set
 		var courseIdsList = courseFacade.getAllCourseIds();
 		return ResponseEntity.ok(courseIdsList);
 	}
