@@ -3,6 +3,7 @@ package com.jakubfilo.schoolservice.rest.response;
 import java.util.Set;
 
 import com.jakubfilo.schoolservice.db.dbo.CourseDbo;
+import com.jakubfilo.schoolservice.domain.CourseTime;
 import com.jakubfilo.schoolservice.domain.DepartmentType;
 import com.jakubfilo.schoolservice.domain.Term;
 
@@ -28,6 +29,8 @@ public class CourseDetailRepresentation {
 	private int startYear;
 	private Set<String> enrolledStudentsIds;
 	private int enrolledStudentsCount;
+	private CourseTime courseTime;
+	private String roomId;
 
 	public static CourseDetailRepresentation from(CourseDbo courseDbo) {
 		return CourseDetailRepresentation.builder()
@@ -42,6 +45,8 @@ public class CourseDetailRepresentation {
 				.startYear(courseDbo.getStartYear())
 				.enrolledStudentsIds(courseDbo.getEnrolledStudentsIds())
 				.enrolledStudentsCount(courseDbo.getEnrolledStudentsCount())
+				.courseTime(CourseTime.courseTimeForCourse(courseDbo))
+				.roomId(courseDbo.getRoomId())
 				.build();
 	}
 }

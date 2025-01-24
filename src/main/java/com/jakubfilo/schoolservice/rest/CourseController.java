@@ -1,6 +1,8 @@
 package com.jakubfilo.schoolservice.rest;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jakubfilo.schoolservice.api.CourseControllerApi;
 import com.jakubfilo.schoolservice.api.model.CourseDetailApi;
 import com.jakubfilo.schoolservice.api.model.CourseDetailBriefApi;
+import com.jakubfilo.schoolservice.api.model.CourseTimetableDetailApi;
 import com.jakubfilo.schoolservice.api.model.DepartmentTypeApi;
 import com.jakubfilo.schoolservice.api.model.MultipleCourseDetailApi;
 import com.jakubfilo.schoolservice.api.model.MultipleCourseDetailBriefApi;
@@ -55,6 +58,17 @@ public class CourseController implements CourseControllerApi {
 	public ResponseEntity<StudentsInCourseApi> getCourseStudents(String courseId) {
 		var studentDetails = studentFacade.getStudentsInCourse(courseId);
 		return ResponseEntity.ok(STUDENT_MAPPER.map(studentDetails));
+	}
+
+	@Override
+	public ResponseEntity<Set<CourseTimetableDetailApi>> getCourseTimes(Set<String> courseIds) {
+		var courseTimeDetails = courseFacade.getCourseTimesBatch(courseIds);
+
+		var responseBody = courseTimeDetails.stream()
+				.map(COURSE_MAPPER::map)
+				.collect(Collectors.toSet());
+
+		return ResponseEntity.ok(responseBody);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.jakubfilo.schoolservice.db.dbo;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
@@ -30,5 +32,8 @@ public class CourseDbo {
 	Set<String> enrolledStudentsIds = Set.of();
 	@Builder.Default
 	int enrolledStudentsCount = 0;
-	// TODO add more info, for example room, day of week, time
+	DayOfWeek dayOfWeek;
+	LocalTime startTime;
+	LocalTime endTime;
+	String roomId;
 }

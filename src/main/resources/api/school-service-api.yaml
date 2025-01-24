@@ -251,6 +251,56 @@ paths:
                 items:
                   $ref: '#/components/schemas/CourseDetail'
                 uniqueItems: true
+#  /school/course/time/{courseId}:  # external
+#    get:
+#      tags:
+#      - external-course-controller
+#      summary: Return time details of course with given id
+#      operationId: getCourseTime
+#      parameters:
+#      - name: courseId
+#        in: path
+#        description: Id of course to return time details for
+#        required: true
+#        schema:
+#          type: string
+#      responses:
+#        '200':
+#          description: Time details for course with given Id
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/CourseTimeDetail'
+#        '404':
+#          description: Course not found
+  /school/course/time/batch/:  # internal
+    get:
+      tags:
+      - course-controller
+      summary: Return time details for a batch of courses
+      operationId: getCourseTimes
+      parameters:
+      - name: courseIds
+        in: query
+        description: List of course ids to return time details for
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      responses:
+        '200':
+          description: Time details for courses with given Ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseTimetableDetail'
+                uniqueItems: true
+        '404':
+          description: Some courses were not found
 
   /school/course/enroll:
     post:
@@ -390,6 +440,7 @@ components:
       required:
       - id
       - name
+      - courseCode
       properties:
         id:
           type: string
@@ -424,6 +475,10 @@ components:
         enrolledStudentsCount:
           type: integer
           format: int32
+        courseTime:
+          $ref: '#/components/schemas/CourseTime'
+        roomId:
+          type: string
     Term:
       type: string
       enum:
@@ -451,6 +506,9 @@ components:
             format: int32
     StudentDetail: # TODO possibly extend with more details
       type: object
+      required:
+        - id
+        - name
       properties:
         id:
           type: string
@@ -462,6 +520,7 @@ components:
           type: string # TODO change to number type from Student Service
         courses:
           type: array
+          default: []
           items:
             type: string
             uniqueItems: true
@@ -484,6 +543,7 @@ components:
       required:
       - id
       - name
+      - courseCode
       properties:
         id:
           type: string
@@ -546,3 +606,42 @@ components:
             type: string
           uniqueItems: true
           default: []
+    DayOfWeek:
+      type: string
+      enum:
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+    CourseTime:
+      type: object
+      properties:
+        daysOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+        startHour:
+          type: integer
+          minimum: 0
+          maximum: 23
+        startMinute:
+          type: integer
+          minimum: 0
+          maximum: 59
+        endHour:
+          type: integer
+          minimum: 0
+          maximum: 23
+        endMinute:
+          type: integer
+          minimum: 0
+          maximum: 59
+    CourseTimetableDetail:
+      type: object
+      properties:
+        courseId:
+          type: string
+        courseTime:
+          $ref: '#/components/schemas/CourseTime'
+        roomId:
+          type: string
+

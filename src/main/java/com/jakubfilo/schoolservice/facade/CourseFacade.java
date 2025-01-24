@@ -1,5 +1,6 @@
 package com.jakubfilo.schoolservice.facade;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Component;
 import com.jakubfilo.schoolservice.client.PeopleServiceClient;
 import com.jakubfilo.schoolservice.db.CourseRepository;
 import com.jakubfilo.schoolservice.db.dbo.CourseDbo;
+import com.jakubfilo.schoolservice.domain.CourseTime;
+import com.jakubfilo.schoolservice.rest.exception.InvalidCourseIdsException;
 import com.jakubfilo.schoolservice.rest.response.CourseDetailRepresentation;
+import com.jakubfilo.schoolservice.rest.response.CourseTimetableDetail;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +55,32 @@ public class CourseFacade {
 
 		LOGGER.info("Enrolled student {} in courses {}", studentId, enrolledCoursesIds);
 		return enrolledCoursesIds;
+	}
+
+	public Set<CourseTimetableDetail> getCourseTimesBatch(Set<String> courseIds) {
+		var courseTimeDetails = new HashSet<CourseTimetableDetail>();
+		var invalidCourseIds = new HashSet<String>();
+
+		courseIds.forEach(courseId -> {
+			var courseTimeDetailOptional = getCourseTimeDetail(courseId);
+			courseTimeDetailOptional.ifPresentOrElse(
+					courseTimeDetails::add,
+					() -> invalidCourseIds.add(courseId)
+			);
+		});
+
+		if (!invalidCourseIds.isEmpty()) {
+			LOGGER.warn("Invalid course ids: {}", invalidCourseIds);
+			throw new InvalidCourseIdsException(Set.copyOf(invalidCourseIds));
+		}
+
+		return Set.copyOf(courseTimeDetails);
+	}
+
+	public Optional<CourseTimetableDetail> getCourseTimeDetail(String courseId) {
+		return courseRepository.findById(courseId)
+				.map(courseDbo -> new CourseTimetableDetail(courseDbo.getId(), CourseTime.courseTimeForCourse(courseDbo),
+						courseDbo.getRoomId()));
 	}
 
 	private Optional<CourseDbo> enrollStudentInCourse(String studentId, String courseId) {
