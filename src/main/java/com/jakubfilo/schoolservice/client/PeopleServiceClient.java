@@ -1,47 +1,34 @@
 package com.jakubfilo.schoolservice.client;
 
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import com.jakubfilo.schoolservice.client.api.MultipleStudentsDetailRepresentation;
+import com.jakubfilo.schoolservice.client.api.StudentApiMapper;
+import com.jakubfilo.schoolservice.client.api.StudentsControllerApi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class PeopleServiceClient {
 
-	public static final String CLIENT_NAME = "people-service";
-	private final PeopleServiceClientApi peopleServiceClientApi;
+	private final StudentsControllerApi studentsControllerApi;
+	private final StudentApiMapper studentApiMapper = StudentApiMapper.INSTANCE;
 
 	public MultipleStudentsDetailRepresentation getStudentsDetailBatchLookup(Set<String> studentIds) {
-		try {
-			return getStudentsDetailBatchLookupAsync(studentIds).get();
-		} catch (Exception e) {
-			LOGGER.info("Exception during getStudentsDetailBatchLookup('{}'), returning empty", studentIds, e);
+		var apiResponse = studentsControllerApi.getStudentDetailsBatchLookupWithHttpInfo(studentIds);
+		if (apiResponse.getStatusCode() == HttpStatus.OK.value()) {
+			return studentApiMapper.map(apiResponse.getData());
+		} else {
+			LOGGER.info("Exception during getStudentsDetailBatchLookup('{}'), response coce '{}', returning empty", studentIds, apiResponse.getStatusCode());
 			return MultipleStudentsDetailRepresentation.empty();
 		}
 	}
 
-	private CompletableFuture<MultipleStudentsDetailRepresentation> getStudentsDetailBatchLookupAsync(Set<String> studentIds) {
-		return CompletableFuture.supplyAsync(() -> peopleServiceClientApi.getStudentsDetailBatchLookup(studentIds));
-	}
 
-	@FeignClient(
-			name = CLIENT_NAME,
-			url = "${clientsConfiguration.peopleService.host}",
-			dismiss404 = true
-	)
-	public interface PeopleServiceClientApi {
-
-		String STUDENTS_DETAIL_BATCH_LOOKUP_RESOURCE = "/students/detail/batch-lookup";
-
-		@GetMapping(STUDENTS_DETAIL_BATCH_LOOKUP_RESOURCE)
-		MultipleStudentsDetailRepresentation getStudentsDetailBatchLookup(@RequestParam(name = "ids") Set<String> studentIds);
-	}
 }

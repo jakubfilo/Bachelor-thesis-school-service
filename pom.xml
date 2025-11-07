@@ -49,6 +49,26 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>4.1.4</version>
         </dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+			<version>13.6</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-jackson</artifactId>
+			<version>13.6</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-okhttp</artifactId>
+			<version>13.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.8</version>
+		</dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -74,7 +94,6 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-
 
         <!-- TEST -->
         <dependency>
@@ -127,7 +146,7 @@
                 <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>api</id>
+                        <id>api-server</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -151,6 +170,25 @@
                             </configOptions>
                         </configuration>
                     </execution>
+					<execution>
+						<id>api-client</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generatorName>java</generatorName>
+							<inputSpec>${project.basedir}/provider-apis/people-service-api.json</inputSpec>
+							<output>${project.build.directory}/generated-sources/openapi-client</output>
+							<apiPackage>${package.name}.client.api</apiPackage>
+							<modelPackage>${package.name}.client.model</modelPackage>
+							<invokerPackage>${package.name}.client.invoker</invokerPackage>
+							<configOptions>
+								<library>feign</library>
+								<dateLibrary>java8</dateLibrary>
+								<useJakartaEe>true</useJakartaEe>
+							</configOptions>
+						</configuration>
+					</execution>
                 </executions>
             </plugin>
         </plugins>
