@@ -25,7 +25,7 @@ public class PeopleServiceClient {
 		if (apiResponse.getStatusCode() == HttpStatus.OK.value()) {
 			return studentApiMapper.map(apiResponse.getData());
 		} else {
-			LOGGER.info("Exception during getStudentsDetailBatchLookup('{}'), response coce '{}', returning empty", studentIds, apiResponse.getStatusCode());
+			LOGGER.info("Exception during getStudentsDetailBatchLookup('{}'), response code '{}', returning empty", studentIds, apiResponse.getStatusCode());
 			return MultipleStudentsDetailRepresentation.empty();
 		}
 	}
