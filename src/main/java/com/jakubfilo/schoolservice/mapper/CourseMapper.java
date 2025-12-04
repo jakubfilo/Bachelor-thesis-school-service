@@ -1,10 +1,13 @@
 package com.jakubfilo.schoolservice.mapper;
 
+import java.time.DayOfWeek;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import com.jakubfilo.schoolservice.api.model.CourseDetailApi;
 import com.jakubfilo.schoolservice.api.model.CourseTimetableDetailApi;
+import com.jakubfilo.schoolservice.api.model.DayOfWeekApi;
 import com.jakubfilo.schoolservice.api.model.EnrollStudentInCoursesResponseApi;
 import com.jakubfilo.schoolservice.rest.response.CourseDetailRepresentation;
 import com.jakubfilo.schoolservice.rest.response.CourseTimetableDetail;
@@ -20,4 +23,8 @@ public interface CourseMapper {
 	EnrollStudentInCoursesResponseApi map(EnrollStudentInCoursesResponse enrollStudentResponse);
 
 	CourseTimetableDetailApi map(CourseTimetableDetail courseTimetableDetail);
+
+	default DayOfWeekApi map(DayOfWeek dayOfWeek) {
+		return DayOfWeekApi.fromValue(dayOfWeek.name());
+	}
 }

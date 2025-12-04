@@ -275,7 +275,7 @@ paths:
 #                $ref: '#/components/schemas/CourseTimeDetail'
 #        '404':
 #          description: Course not found
-  /school/course/time/batch/:  # internal
+  /school/course/time/batch:  # internal
     get:
       tags:
       - course-controller
@@ -327,18 +327,20 @@ paths:
             type: string
           uniqueItems: true
       responses:
-        '200':
+        '201':
           description: Student enrolled in all courses
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EnrollStudentInCoursesResponse'
-        '404':
-          description: Some courses were not found
+        '206':
+          description: Student enrolled only in some courses (others not found)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EnrollStudentInCoursesResponse'
+        '404':
+          description: No course from selected was found
 
   /school/department/list:
     get:
@@ -599,6 +601,9 @@ components:
         # TODO add more details about department
     EnrollStudentInCoursesResponse:
       type: object
+      required:
+        - studentId
+        - enrolledCourses
       properties:
         studentId:
           type: string
@@ -619,7 +624,7 @@ components:
     CourseTime:
       type: object
       properties:
-        daysOfWeek:
+        dayOfWeek:
           $ref: '#/components/schemas/DayOfWeek'
         startHour:
           type: integer

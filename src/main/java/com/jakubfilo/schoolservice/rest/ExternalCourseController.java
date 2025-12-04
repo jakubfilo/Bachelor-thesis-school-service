@@ -27,14 +27,24 @@ public class ExternalCourseController implements ExternalCourseControllerApi { /
 	@Override
 	public ResponseEntity<EnrollStudentInCoursesResponseApi> enrollStudentInCourses(String studentId, Set<String> courseIds) {
 		var enrolledCoursesIds = courseFacade.enrollStudentInCourses(studentId, courseIds);
+
+		if (enrolledCoursesIds.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
 		var enrollStudentResponse = EnrollStudentInCoursesResponse.builder()
 				.studentId(studentId)
 				.enrolledCourses(enrolledCoursesIds)
 				.build();
 
 		var response = COURSE_MAPPER.map(enrollStudentResponse);
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(response);
+
+		if (enrolledCoursesIds.size() != courseIds.size()) {
+			return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+					.body(response);
+		} else {
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(response);
+		}
 	}
 
 	@Override
