@@ -251,6 +251,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/CourseDetail'
                 uniqueItems: true
+        '404':
+          description: No courses from specified were found
 #  /school/course/time/{courseId}:  # external
 #    get:
 #      tags:
