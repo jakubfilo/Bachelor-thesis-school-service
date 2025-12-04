@@ -44,6 +44,10 @@ public class ExternalCourseController implements ExternalCourseControllerApi { /
 				.map(COURSE_MAPPER::map)
 				.collect(Collectors.toSet());
 
+		if (courseDetails.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
 		if (courseDetails.size() != courseIds.size()) {
 			return ResponseEntity
 					.status(CustomStatusCodes.BATCH_LOOKUP_INCOMPLETE.getStatusCode())
