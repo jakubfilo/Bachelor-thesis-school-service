@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0</version>
+        <version>3.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -19,12 +19,16 @@
     <properties>
         <package.name>com.jakubfilo.schoolservice</package.name>
         <main.class>${package.name}.SchoolService</main.class>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
 
         <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
         <mapstruct.version>1.6.2</mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
         <lombock-mapstruct-binding.version>0.2.0</lombock-mapstruct-binding.version>
+        <pact.version>4.6.17</pact.version>
+
+        <pact.tests.skip>true</pact.tests.skip>
+        <default.tests.skip>false</default.tests.skip>
     </properties>
 
     <dependencies>
@@ -43,7 +47,6 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
-            <version>3.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -70,6 +73,11 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.8</version>
 		</dependency>
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -97,6 +105,26 @@
             <version>${mapstruct.version}</version>
         </dependency>
 
+        <!-- Pact -->
+        <dependency>
+            <groupId>au.com.dius.pact.provider</groupId>
+            <artifactId>junit5spring</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>junit5</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -106,7 +134,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -185,12 +212,66 @@
 							<modelPackage>${package.name}.client.model</modelPackage>
 							<invokerPackage>${package.name}.client.invoker</invokerPackage>
 							<configOptions>
-								<library>feign</library>
+								<library>resttemplate</library>
 								<dateLibrary>java8</dateLibrary>
 								<useJakartaEe>true</useJakartaEe>
 							</configOptions>
 						</configuration>
 					</execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
+                <version>${pact.version}</version>
+                <configuration>
+                    <projectVersion>${pact.consumer.version}</projectVersion>
+                    <pactDirectory>${project.build.directory}/pacts</pactDirectory>
+                    <pactBrokerUrl>${pact.broker.url}</pactBrokerUrl>
+                    <pactBrokerUsername>${pact.broker.user}</pactBrokerUsername>
+                    <pactBrokerPassword>${pact.broker.password}</pactBrokerPassword>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.4</version>
+                <configuration>
+                    <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pact-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${pact.tests.skip}</skip>
+                            <includes>
+                                <include>**.pact.**</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${default.tests.skip}</skip>
+                            <excludes>
+                                <exclude>**.pact.**</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

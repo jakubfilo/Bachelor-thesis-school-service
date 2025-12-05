@@ -22,8 +22,8 @@ public class PeopleServiceClient {
 
 	public MultipleStudentsDetailRepresentation getStudentsDetailBatchLookup(Set<String> studentIds) {
 		var apiResponse = studentsControllerApi.getStudentDetailsBatchLookupWithHttpInfo(studentIds);
-		if (apiResponse.getStatusCode() == HttpStatus.OK.value()) {
-			return studentApiMapper.map(apiResponse.getData());
+		if (apiResponse.getStatusCode().is2xxSuccessful()) {
+			return studentApiMapper.map(apiResponse.getBody());
 		} else {
 			LOGGER.info("Exception during getStudentsDetailBatchLookup('{}'), response code '{}', returning empty", studentIds, apiResponse.getStatusCode());
 			return MultipleStudentsDetailRepresentation.empty();
