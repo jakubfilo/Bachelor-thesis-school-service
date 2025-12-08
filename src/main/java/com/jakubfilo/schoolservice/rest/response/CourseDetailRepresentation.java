@@ -18,12 +18,13 @@ public class CourseDetailRepresentation {
 
 	private String id;
 	private String courseName;
-	private String code;
+	private String courseCode;
 	private String description;
 	private String departmentId;
 	private DepartmentType departmentType;
 	private String teacherId;
 	private Term term;
+	private int credits;
 	@Min(1993)
 	@Max(2100)
 	private int startYear;
@@ -36,7 +37,7 @@ public class CourseDetailRepresentation {
 		return CourseDetailRepresentation.builder()
 				.id(courseDbo.getId())
 				.courseName(courseDbo.getCourseName())
-				.code(courseDbo.getCode())
+				.courseCode(courseDbo.getCode())
 				.description(courseDbo.getDescription())
 				.departmentId(courseDbo.getDepartmentId())
 				.departmentType(courseDbo.getDepartmentType())

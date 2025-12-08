@@ -6,10 +6,12 @@ import java.time.LocalTime;
 import com.jakubfilo.schoolservice.db.dbo.CourseDbo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class CourseTime {
 
 	private DayOfWeek dayOfWeek;
