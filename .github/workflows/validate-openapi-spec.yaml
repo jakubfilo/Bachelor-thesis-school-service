@@ -31,4 +31,4 @@ jobs:
     - name: Validate OpenAPI Specification
       uses: jakubfilo/openapi-validator@main
       with:
-        spec-path: ./src/main/resources/api/school-service-api.yaml
+        spec-path: ./src/main/resources/api/school-service-api.json
