@@ -8,7 +8,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return ids of all courses
+      description: Return ids of all courses
       operationId: getAllCoursesIds
       responses:
         '200':
@@ -23,7 +23,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return brief detail of courses that are available for student to take (e.g. not yet completed)
+      description: Return brief detail of courses that are available for student to take (e.g. not yet completed)
       operationId: getAllAvailableCourses
       parameters:
       - name: department
@@ -65,7 +65,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return complete details of all courses
+      description: Return complete details of all courses
       operationId: getAllCoursesDetails
       responses:
         '200':
@@ -78,7 +78,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return brief details of all courses
+      description: Return brief details of all courses
       operationId: getAllCoursesDetailsBrief
       responses:
         '200':
@@ -91,7 +91,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return details of course with given id
+      description: Return details of course with given id
       operationId: getCourseDetail
       parameters:
       - name: courseId
@@ -113,7 +113,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return brief details of course with given id
+      description: Return brief details of course with given id
       operationId: getCourseDetailBrief
       parameters:
       - name: courseId
@@ -135,7 +135,7 @@ paths:
     get:
       tags:
       - course-controller
-      summary: Return list of students (enriched with info from student service) enrolled in course with given id. When People service is unavailable, returns list of only student ids without enriching
+      description: Return list of students (enriched with info from student service) enrolled in course with given id. When People service is unavailable, returns list of only student ids without enriching
       operationId: getCourseStudents
       parameters:
       - name: courseId
@@ -144,11 +144,6 @@ paths:
         required: true
         schema:
           type: string
-#      - name: gpa
-#        in: query
-#        description: Include student's GPA in the list
-#        schema:
-#          type: boolean TODO potentially implement this?
       responses:
         '200':
           description: List of students enrolled in course with given Id
@@ -165,7 +160,7 @@ paths:
     get:
       tags:
       - course-controller-demo-cases
-      summary: Return list of students (enriched with info from student service) enrolled in course with given id.
+      description: Return list of students (enriched with info from student service) enrolled in course with given id.
       operationId: getCourseStudentsNoFallback
       parameters:
       - name: courseId
@@ -190,7 +185,7 @@ paths:
     get:
       tags:
       - course-controller-demo-cases
-      summary: Should return list of students in a course enriched with info from people service. However, people service has not been implemented yet. Returns only list of student ids
+      description: Should return list of students in a course enriched with info from people service. However, people service has not been implemented yet. Returns only list of student ids
       operationId: getCourseStudentsNotImplemented
       parameters:
       - name: courseId
@@ -199,11 +194,6 @@ paths:
         required: true
         schema:
           type: string
-#      - name: gpa
-#        in: query
-#        description: Include student's GPA in the list
-#        schema:
-#          type: boolean
       responses:
         '200':
           description: List of students enrolled in course with given Id
@@ -220,7 +210,7 @@ paths:
     get:
       tags:
       - external-course-controller
-      summary: Return details of courses with given ids, skips the ones that are not found
+      description: Return details of courses with given ids, skips the ones that are not found
       operationId: getCourseDetailsBatch
       parameters:
       - name: courseIds
@@ -253,33 +243,11 @@ paths:
                 uniqueItems: true
         '404':
           description: No courses from specified were found
-#  /school/course/time/{courseId}:  # external
-#    get:
-#      tags:
-#      - external-course-controller
-#      summary: Return time details of course with given id
-#      operationId: getCourseTime
-#      parameters:
-#      - name: courseId
-#        in: path
-#        description: Id of course to return time details for
-#        required: true
-#        schema:
-#          type: string
-#      responses:
-#        '200':
-#          description: Time details for course with given Id
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/CourseTimeDetail'
-#        '404':
-#          description: Course not found
   /school/course/time/batch:  # internal
     get:
       tags:
       - course-controller
-      summary: Return time details for a batch of courses
+      description: Return time details for a batch of courses
       operationId: getCourseTimes
       parameters:
       - name: courseIds
@@ -308,7 +276,7 @@ paths:
     post:
       tags:
       - external-course-controller
-      summary: Enroll student in given courses
+      description: Enroll student in given courses
       operationId: enrollStudentInCourses
       parameters:
       - name: studentId
@@ -346,7 +314,7 @@ paths:
     get:
       tags:
       - department-controller
-      summary: Return list of all departments
+      description: Return list of all departments
       operationId: getAllDepartments
       responses:
         '200':
@@ -360,7 +328,7 @@ paths:
     get:
       tags:
       - department-controller
-      summary: Return detail of selected department
+      description: Return detail of selected department
       operationId: getAllDepartmentDetails
       parameters:
       - name: department
@@ -383,7 +351,7 @@ paths:
     get:
       tags:
       - department-controller
-      summary: Return details about head of department
+      description: Return details about head of department
       operationId: getDepartmentHead
       parameters:
       - name: department
@@ -399,10 +367,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DepartmentHeadDetail'
-
-
-# TODO add more APIs, add at least one endpoint, that will be used by Service-A that is not implemented yet
-
 
 components:
   schemas:
@@ -508,7 +472,7 @@ components:
           studentsCount:
             type: integer
             format: int32
-    StudentDetail: # TODO possibly extend with more details
+    StudentDetail:
       type: object
       required:
         - id
@@ -586,7 +550,6 @@ components:
           type: string
         phone:
           type: string
-        # TODO add more details about head of department
     DepartmentDetail:
       type: object
       properties:
@@ -597,8 +560,7 @@ components:
           items:
             $ref: '#/components/schemas/CourseDetail'
         head:
-          $ref: '#/components/schemas/DepartmentHeadDetail' # Todo change this to something else
-        # TODO add more details about department
+          $ref: '#/components/schemas/DepartmentHeadDetail'
     EnrollStudentInCoursesResponse:
       type: object
       required:

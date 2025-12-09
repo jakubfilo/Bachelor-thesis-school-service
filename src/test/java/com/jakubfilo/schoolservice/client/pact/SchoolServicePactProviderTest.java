@@ -86,7 +86,6 @@ public class SchoolServicePactProviderTest {
 
 	@State("Courses with details exist")
 	void getCoursesWithDetails() {
-		// TODO implement state setup
 		when(courseFacade.getCourseDetailsBatch(Set.of("COURSE1", "COURSE2"))).thenReturn(
 				Set.of(
 						CourseDetailRepresentation.builder()
