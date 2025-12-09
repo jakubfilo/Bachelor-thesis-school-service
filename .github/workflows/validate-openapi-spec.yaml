@@ -29,6 +29,6 @@ jobs:
         ref: ${{ github.sha }}
 
     - name: Validate OpenAPI Specification
-      uses: jakubfilo/openapi-validator@v1
+      uses: jakubfilo/openapi-validator@main
       with:
-        spec-file: ./src/main/resources/api/school-service-api.yaml
+        spec-path: ./src/main/resources/api/school-service-api.yaml
