@@ -62,7 +62,6 @@ jobs:
     needs: [ setup, check-service-compiles ]
     runs-on: ubuntu-latest
     if: >
-      github.ref_name == github.event.repository.default_branch &&
       !startsWith(github.event.head_commit.message, '[AUTO CI-BOT]')
     steps:
     - uses: actions/checkout@v5
@@ -79,7 +78,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ setup, check-service-compiles]
     if: >
-      github.ref_name == github.event.repository.default_branch &&
       !startsWith(github.event.head_commit.message, '[AUTO CI-BOT]')
     steps:
     - uses: actions/checkout@v5
