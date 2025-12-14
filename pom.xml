@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.jakubfilo</groupId>
@@ -21,7 +21,7 @@
         <main.class>${package.name}.SchoolService</main.class>
         <java.version>25</java.version>
 
-        <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.17.0</openapi-generator-maven-plugin.version>
         <mapstruct.version>1.6.2</mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
         <lombock-mapstruct-binding.version>0.2.0</lombock-mapstruct-binding.version>
